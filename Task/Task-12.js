@@ -4,14 +4,20 @@
 // If age >= 18 print "Eligible" else "Not Eligible"
 
 
-let age=prompt();
+// let age=prompt();
 
-if (age >=18){
-    console.log("Eligible");
-    alert("Eligible");
-}
-else{
-    console.log("Not Eligible");
-    alert("Not Eligible")
+// if (age >=18){
+//     console.log("Eligible");
+//     alert("Eligible");
+// }
+// else{
+//     console.log("Not Eligible");
+//     alert("Not Eligible")
     
-}
+// }
+
+
+let age=prompt();
+let result = (age >=18) ? "Eligible" :" Not Eligible";
+console.log(result);
+alert(result);

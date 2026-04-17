@@ -12,4 +12,4 @@ let fruit =["apple", "banana", "mongo", "grapes", "Orange"];
 console.log(fruit); //output:  ['apple', 'banana', 'mongo', 'grapes', 'Orange']
 console.log(fruit[0]);  //output:apple
 console.log(fruit[fruit.length-1]);     //output: Orange
-console.log(fruit.slice(1,4));  //output:  ['banana', 'mongo', 'grapes']
+console.log(fruit.slice(1,4));  //output:  ['banana', 'mongo', 'grapes'

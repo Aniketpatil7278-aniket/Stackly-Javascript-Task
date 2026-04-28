@@ -16,7 +16,7 @@ console.log("value od a :-" +a);   //output:value od a :-100
 let marks=80;
 
 marks +=10;
-console.log("total Marks: " +marks);
+console.log("total Marks: " +marks); 
 
 
 //output: total Marks: 90

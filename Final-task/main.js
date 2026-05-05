@@ -18,7 +18,7 @@ fetch(API)
 
 console.clear();
 
-//-----------------------------------------------SECATION--1---------------------------------
+//-----------------------------------------------SECATION--2---------------------------------
 // 🔹 2. Dynamic UI Rendering
 // Each product card must include:
 // Product Title (max 50 characters)
@@ -61,4 +61,14 @@ fetch(API)
     
 })
 
-//-----------------------------------------------SECATION--1---------------------------------
+//-----------------------------------------------SECATION--5---------------------------------
+// //⚙️ Intermediate Level Features
+// 🔍 Search Functionality
+// Add input field
+// Filter products by title (real-time)
+// 🧠 Code Structure
+// Use a separate function:
+// function displayProducts(data) {}
+// Avoid writing all logic inside .then()
+
+

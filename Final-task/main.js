@@ -69,10 +69,19 @@ Price: $${c.price}`);
 
     card.querySelector(".cartBtn").addEventListener("click", () => {
       let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      let exists = cart.find((item) => item.id === c.id);
       cart.push(c);
-      localStorage.setItem("cart", JSON.stringify(cart));
-      updateCartCount(); 
-      alert("Added to Cart");
+      if (!exists) {
+        cart.push(c);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        alert("Added to Cart");
+        updateCartCount(); 
+      } else {
+        alert("Already in Cart");
+        updateCartCount(); 
+      }
+      
+      
     });
 
     product.append(card); // adding the data in the card

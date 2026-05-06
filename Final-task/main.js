@@ -18,57 +18,137 @@ fetch(API)
 
 console.clear();
 
-//-----------------------------------------------SECATION--2---------------------------------
-// 🔹 2. Dynamic UI Rendering
-// Each product card must include:
-// Product Title (max 50 characters)
-// Product Image
-// Product Price
-// Short Description (max 60 characters)
+//----------------------------------clean code of the funcation --------------------------------------
 
-let statusText = document.getElementById("status");  //selecting the id from the html page 
-//initilation the loading status 
-statusText.innerText = "Loading..."; 
+let statusText = document.getElementById("status"); //select the id from html page
+let product = document.querySelector(".products"); //select the class from html page
 
+let allProducts = []; // all data store in the array formate
+// 🔹 Fetching the data
 fetch(API)
-.then(res=>res.json())
+  .then((res) => res.json())
+  .then((data) => {
+    allProducts = data;
+    statusText.innerText = "";
+    loadCategories(allProducts);
+    displayProducts(allProducts); //calling the function
+    updateCartCount();
+  })
+  .catch((e) => {
+    console.log("Error", e);
+    statusText.innerText = "Failed to load data";
+  });
 
-.then((data)=>{
-  let product = document.querySelector(".products"); //selecting the div from html page
-  statusText.innerText = ""; // remove loading text
+//  Reusable function dispaly the data
+let displayProducts = (data1) => {
+  product.innerHTML = "";
 
-  data.forEach((c) => {
-    let card = document.createElement("div"); //create the card 
+  if (data1.length == 0) {
+    product.innerHTML = "<h3>No Products Found</h3>";
+    return;
+  }
+
+  data1.forEach((c) => {
+    let card = document.createElement("div");
 
     card.innerHTML = `
-                    <h2>${c.title.slice(0, 50) + "..."}</h2>
-                    <img src="${c.image}" alt="${c.category}"/>
-                    <p>Price:${c.price}</p>
-                    <p>${c.description.slice(0, 60) + "..."}</p>
-                    <button>View More</button>`; //card data 
+                         <h2>${c.title.slice(0, 50) + "..."}</h2>
+                         <img src="${c.image}" alt="${c.category}"/>
+                         <h4>Price:${c.price}</h4>
+                         <p>${c.description.slice(0, 60) + "..."}</p>
+                        <button class="viewBtn">View More</button>
+                        <button class="cartBtn">Add to Cart</button>`; //card data
 
-    //btn click show info of the product
-    card.querySelector("button").addEventListener("click",()=>{
-        alert(`Title: ${c.title}\n Category: ${c.category}\n Description: ${c.description}\n Price: ${c.price}\n`);
-    })
-    product.append(card); //added the data 
+    //btn click alte box open and show all info of the products
+    card.querySelector(".viewBtn").addEventListener("click", () => {
+      alert(`Title: ${c.title}
+Category: ${c.category}
+Description: ${c.description}
+Price: $${c.price}`);
+    });
+
+    card.querySelector(".cartBtn").addEventListener("click", () => {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push(c);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      updateCartCount(); 
+      alert("Added to Cart");
+    });
+
+    product.append(card); // adding the data in the card
   });
+};
+
+//-------------------------------------search the data------------------------
+
+document.getElementById("search").addEventListener("input", (e) => {
+  let value = e.target.value.toLowerCase();
+
+  let filterdata = allProducts.filter((p) => {
+    return p.title.toLowerCase().includes(value);
+  });
+  console.log(filterdata); // print data in the console
+
+  displayProducts(filterdata);
+});
+
+//---------------------loadCategories-function ----------------------
+
+let loadCategories = (data1) => {
+  let catselect = document.getElementById("category");
+
+  let categories = [...new Set(data1.map((a) => a.category))];
+
+  categories.forEach((cat) => {
+    let option = document.createElement("option");
+    option.value = cat;
+    option.innerText = cat;
+    catselect.append(option);
+    console.log(option);
+  });
+};
+
+//displaying the data filtered data
+document.getElementById("category").addEventListener("change", (e) => {
+  let value = e.target.value;
+
+  let filterted =
+    value === "All"
+      ? allProducts
+      : allProducts.filter((a) => a.category === value);
+
+  displayProducts(filterted);
+});
+
+//---------------------sort the products ------------------------
+
+document.querySelector(".sort").addEventListener("change", (e) => {
+  let value = e.target.value;
+
+  let sorted = [...allProducts];
+
+  if (value === "low") {
+    sorted.sort((a, b) => a.price - b.price);
+  } else if (value === "high") {
+    sorted.sort((a, b) => b.price - a.price);
+  }
+  displayProducts(sorted);
+  console.log(sorted);
+});
+
+//-------------Added products card count ----------------------
+
+let updateCartCount=(()=>{
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    document.getElementById("cartCount").innerText = cart.length;
 })
-//catch the error 
-.catch((e)=>{
-    console.log("Error",e);
-    statusText.innerText = "Failed to load data";
-    
+
+//-------------View Cart button click---------------
+
+document.querySelector("#viewCart").addEventListener("click", ()=>{
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    console.log("Cart Items:", cart);
+    alert("Check console for cart items");
+
+
 })
-
-//-----------------------------------------------SECATION--5---------------------------------
-// //⚙️ Intermediate Level Features
-// 🔍 Search Functionality
-// Add input field
-// Filter products by title (real-time)
-// 🧠 Code Structure
-// Use a separate function:
-// function displayProducts(data) {}
-// Avoid writing all logic inside .then()
-
-
